@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>T21 Cinema Seats — drag across a row, the seats fold into a ticket</title>
+<link rel="stylesheet" href="_shared/nocturne.css">
+<link rel="stylesheet" href="../style.css">
+<style>
+  /* the component from ../, dressed in Nocturne type */
+  #stage{background:radial-gradient(ellipse 65% 60% at 50% 45%,#0E1018 0%,var(--void) 72%);
+    --font:var(--f-text);--mono:var(--f-mono);--display:var(--f-display)}
+  #stage .cs{position:absolute;left:130px;top:80px;zoom:1;z-index:1}
+  .halo{position:absolute;left:50%;top:44%;width:1300px;height:700px;margin:-350px 0 0 -650px;border-radius:50%;pointer-events:none;z-index:0;
+    background:radial-gradient(closest-side,rgba(0,0,0,0),rgba(0,0,0,0))}
+  #stage .cs{left:40px;top:36px}
+  #stage{background:var(--page)}
+  #stage.grid::before{opacity:0}
+  .status-line{color:var(--text-3)}
+</style>
+</head>
+<body>
+<div id="stage" class="grid" data-title="T21 Cinema Seats" data-url="veraetogrex-portfolio.github.io/cinema-seats">
+  <div class="halo"></div>
+  <section class="cs" id="seats" aria-label="Pick seats and buy tickets">
+    <div class="cs-hall">
+      <div class="cs-screen" aria-hidden="true">
+        <svg viewBox="0 0 720 150" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="cs-s" x1="0" x2="1"><stop offset="0" stop-color="var(--screen-glow)" stop-opacity="0"/><stop offset=".5" stop-color="var(--screen-glow)" stop-opacity="1"/><stop offset="1" stop-color="var(--screen-glow)" stop-opacity="0"/></linearGradient>
+            <linearGradient id="cs-l" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--screen-glow)" stop-opacity=".14"/><stop offset="1" stop-color="var(--screen-glow)" stop-opacity="0"/></linearGradient>
+          </defs>
+          <path d="M0 26 Q360 -8 720 26 L660 150 Q360 112 60 150 Z" fill="url(#cs-l)"/>
+          <path d="M0 26 Q360 -8 720 26" fill="none" stroke="url(#cs-s)" stroke-width="6" stroke-linecap="round"/>
+        </svg>
+        <small>Screen</small>
+      </div>
+      <div class="cs-map" role="group" aria-label="Seat map: drag across a row or press seats"></div>
+    </div>
+
+    <aside class="cs-side">
+      <div class="cs-film">
+        <span class="cs-poster" aria-hidden="true"></span>
+        <div><h1>Northern Lights</h1><p>Fri 13 Nov · 19:40<br>VECTOR Cinema · Hall 4</p></div>
+      </div>
+      <p class="cs-legend"><span><i class="free"></i>Free</span><span><i class="taken"></i>Taken</span><span><i class="yours"></i>Yours</span></p>
+      <div class="cs-chosen"><span>Your seats</span><div class="cs-chips" aria-hidden="true"></div></div>
+      <div class="cs-bar">
+        <p class="cs-price" aria-live="polite"><small class="cs-calc">Pick your seats · $14 each</small><b class="cs-sum">$0</b></p>
+        <button class="cs-buy" aria-disabled="true">Buy tickets</button>
+      </div>
+      <div class="cs-wallet" aria-hidden="true">
+        <span class="pass p1"></span><span class="pass p2"></span>
+        <p class="cs-added"><i><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i>Added to Wallet</p>
+      </div>
+    </aside>
+
+    <div class="cs-tk" aria-live="polite">
+      <div class="cs-flip">
+        <div class="cs-face cs-front">
+          <div class="cs-main">
+            <small>VECTOR Cinema · Hall 4</small>
+            <h2>Northern Lights</h2>
+            <div class="cs-fields"><p><span>Date</span><b>Fri 13 Nov</b></p><p><span>Time</span><b>19:40</b></p><p><span>Seats</span><b class="cs-tseats">D2–D4</b></p></div>
+          </div>
+          <div class="cs-stub"><span>Row</span><b class="cs-trow">D</b><span class="cs-tn">3 seats</span></div>
+        </div>
+        <div class="cs-face cs-back">
+          <svg class="cs-qr" viewBox="0 0 25 25" shape-rendering="crispEdges" aria-hidden="true"></svg>
+          <div><h2>Scan at the door</h2><p class="cs-bseats">Row D · seats 2–4</p><p>Hall 4 · 19:40</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="status-line"><span>Veraetogrex · T21</span><span>Cinema · pick seats</span></div>
+</div>
+<script>window.AUTOPLAY = true;</script>
+<script src="_shared/stage.js"></script>
+<script src="../script.js"></script>
+<script>
+document.body.classList.add('th-' + (new URLSearchParams(location.search).get('theme') || 'velvet'));
+const cs = document.querySelector('#seats').cinema;
+Stage.init({
+  reset: () => cs.reset(),
+  cursorStart: [300, 600],                 // just below row D
+  async demo(s) {
+    const t0 = performance.now();
+    const a = s.rect(cs.seat('D2')), b = s.rect(cs.seat('D4'));
+    await s.drag([[a.cx + 24, a.cy], [b.cx, b.cy]], 820, { from: cs.seat('D2'), fromMs: 200, pre: 60, post: 80 });   // drag across D2–D4
+    await s.click(cs.buy, { ms: 520 });    // seats fold into a ticket → QR → wallet
+    s.cursor.hide();
+    await s.until(t0, 5900);
+    cs.rewind();                           // dissolve back to the first frame
+    await s.until(t0, 6600);
+  },
+});
+</script>
+</body>
+</html>

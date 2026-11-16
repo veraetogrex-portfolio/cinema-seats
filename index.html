@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Cinema Seats — veraetogrex_portfolio</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Cinema Seats · zero dependencies · github.com/veraetogrex-portfolio -->
+  <section class="cs" id="seats" aria-label="Pick seats and buy tickets">
+    <div class="cs-hall">
+      <div class="cs-screen" aria-hidden="true">
+        <svg viewBox="0 0 720 150" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="cs-s" x1="0" x2="1"><stop offset="0" stop-color="var(--screen-glow)" stop-opacity="0"/><stop offset=".5" stop-color="var(--screen-glow)" stop-opacity="1"/><stop offset="1" stop-color="var(--screen-glow)" stop-opacity="0"/></linearGradient>
+            <linearGradient id="cs-l" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--screen-glow)" stop-opacity=".14"/><stop offset="1" stop-color="var(--screen-glow)" stop-opacity="0"/></linearGradient>
+          </defs>
+          <path d="M0 26 Q360 -8 720 26 L660 150 Q360 112 60 150 Z" fill="url(#cs-l)"/>
+          <path d="M0 26 Q360 -8 720 26" fill="none" stroke="url(#cs-s)" stroke-width="6" stroke-linecap="round"/>
+        </svg>
+        <small>Screen</small>
+      </div>
+      <div class="cs-map" role="group" aria-label="Seat map: drag across a row or press seats"></div>
+    </div>
+
+    <aside class="cs-side">
+      <div class="cs-film">
+        <span class="cs-poster" aria-hidden="true"></span>
+        <div><h1>Northern Lights</h1><p>Fri 13 Nov · 19:40<br>VECTOR Cinema · Hall 4</p></div>
+      </div>
+      <p class="cs-legend"><span><i class="free"></i>Free</span><span><i class="taken"></i>Taken</span><span><i class="yours"></i>Yours</span></p>
+      <div class="cs-chosen"><span>Your seats</span><div class="cs-chips" aria-hidden="true"></div></div>
+      <div class="cs-bar">
+        <p class="cs-price" aria-live="polite"><small class="cs-calc">Pick your seats · $14 each</small><b class="cs-sum">$0</b></p>
+        <button class="cs-buy" aria-disabled="true">Buy tickets</button>
+      </div>
+      <div class="cs-wallet" aria-hidden="true">
+        <span class="pass p1"></span><span class="pass p2"></span>
+        <p class="cs-added"><i><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i>Added to Wallet</p>
+      </div>
+    </aside>
+
+    <div class="cs-tk" aria-live="polite">
+      <div class="cs-flip">
+        <div class="cs-face cs-front">
+          <div class="cs-main">
+            <small>VECTOR Cinema · Hall 4</small>
+            <h2>Northern Lights</h2>
+            <div class="cs-fields"><p><span>Date</span><b>Fri 13 Nov</b></p><p><span>Time</span><b>19:40</b></p><p><span>Seats</span><b class="cs-tseats">D2–D4</b></p></div>
+          </div>
+          <div class="cs-stub"><span>Row</span><b class="cs-trow">D</b><span class="cs-tn">3 seats</span></div>
+        </div>
+        <div class="cs-face cs-back">
+          <svg class="cs-qr" viewBox="0 0 25 25" shape-rendering="crispEdges" aria-hidden="true"></svg>
+          <div><h2>Scan at the door</h2><p class="cs-bseats">Row D · seats 2–4</p><p>Hall 4 · 19:40</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
