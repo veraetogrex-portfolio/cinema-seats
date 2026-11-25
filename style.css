@@ -1,6 +1,6 @@
 /* Cinema Seats — github.com/veraetogrex-portfolio · zero dependencies */
 :root {
-  /* Nocturne surfaces + the cinema accent (DESIGN.md: кино — красный) */
+  /* Nocturne surfaces + the cinema accent (DESIGN.md: cinema is red) */
   --page: #07080c; --panel: #0e1016; --raise: #151823; --raise-2: #1c2030;
   --text: #f2f3f7; --text-2: #b4b7c6; --text-3: #9093a6;
   --line: rgba(255, 255, 255, .08); --line-2: rgba(255, 255, 255, .16);
